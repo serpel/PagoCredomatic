@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Pago Credomatic</title>
+    <meta name="viewport" content="initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/semantic.min.css">
+</head>
+<body>
+     <div class="ui container">
+        <div class="ui two grid">
+           <div class="ui center aligned segment">
+               <p><h3><i class="hn flag"></i> Tarjeta de Credito</h3></p>
+                <div class="row">
+                    <div class="five wide column">
+                        <div class="card-wrapper"></div>
+                    </div>
+                 <div class="ui horizontal divider" />
+                </div>
+                <div class="row">
+                    <div class="five wide column">
+                        <form id="payment" method="post" action="https://credomatic.compassmerchantsolutions.com/api/transact.php" class="ui form">
+                              <input type="hidden" id="time" name="time" value="" />
+	                          <input type="hidden" id="hash" name="hash" value="" />
+                              <input type="hidden" id="type" name="type" value="sale" />
+                              <input type="hidden" id="orderid" name="orderid" value="CredomaticTest01" />
+                              <input type="hidden" id="key" name="key" value="7927095" />
+	                          <input type="hidden" name="processor_id" value="INET1125" />
+                              <input type="hidden" name="address" value="" />
+	                          <input type="hidden" name="redirect" value="success.html" />
+                               <div class="field">
+                                    <input placeholder="Cantidad" type="number" id="amount" name="amount" value="1.99">
+                                </div>
+                                <div class="field">
+                                    <input placeholder="Numero de Tarjeta" type="tel" name="ccnumber">
+                                </div>
+                                <div class="field">
+                                    <input placeholder="Nombre Completo" type="text" name="name">
+                                </div>
+                                <div class="field">
+                                    <input placeholder="MM/YY" type="tel" name="ccexp">
+                                </div>
+                                <div class="field">
+                                    <input placeholder="CVC" type="number" name="cvc">
+                                </div>
+                                <input type="submit" value="Enviar" class="ui primary button">
+                        </form>
+                    </div>
+                </div>     
+            </div>
+        </div>
+     </div>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="js/semantic.min.js"></script>
+    <script src="js/card.js"></script>
+    <script src="js/md5.min.js"></script>
+    <script>
+        new Card({
+            form: document.querySelector('form'),
+            container: '.card-wrapper',
+			formSelectors: {
+				numberInput: 'input[name="ccnumber"]',
+				expiryInput: 'input[name="ccexp"]',
+				cvcInput: 'input[name="cvc"]',
+				nameInput: 'input[name="name"]'
+			}
+        });
+
+        var time = new Date().getTime();
+        var orderId = document.getElementById("orderid").value;
+        var amount = document.getElementById("amount").value;
+        var key = document.getElementById("key").value;
+        var array = [orderId, amount, time, key];
+        //"$orderid|$amount|$time|$key"
+        //alert(array.join('|'));
+        //debugger;
+        var hash = md5(array.join('|'));
+        document.getElementById("time").value = time;
+        document.getElementById("hash").value = hash;
+    </script>
+</body>
+</html>
